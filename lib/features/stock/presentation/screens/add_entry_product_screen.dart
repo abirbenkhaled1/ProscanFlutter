@@ -1,4 +1,4 @@
-/*import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter_pro_scan/core/constants/app_constants.dart';
@@ -185,4 +185,4 @@ class AddEntryProductScreenState extends State<AddEntryProductScreen> {
     _imageUrlController.dispose();
     super.dispose();
   }
-}*/
+}

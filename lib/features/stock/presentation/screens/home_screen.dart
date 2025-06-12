@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pro_scan/core/constants/app_constants.dart';
 import 'package:flutter_pro_scan/features/stock/data/models/product.dart';
 import 'package:flutter_pro_scan/features/stock/domain/stock_service.dart';
-import 'package:flutter_pro_scan/features/stock/presentation/screens/add_product_screen.dart';
+import 'package:flutter_pro_scan/features/stock/presentation/screens/add_entry_product_screen.dart';
+import 'package:flutter_pro_scan/features/stock/presentation/screens/add_exit_product_screen.dart';
 import 'package:flutter_pro_scan/features/stock/presentation/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,16 +41,37 @@ class HomeScreenState extends State<HomeScreen> {
         body: TabBarView(
           children: [
             _buildProductList(widget.stockService.getEntries),
-            _buildProductList(widget.stockService.getExits),
+            _buildExitTab(),
             _buildProductList(widget.stockService.getAllStock),
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _navigateToAddProduct(context),
-          tooltip: 'Add Product',
+          onPressed: () => _navigateToAddEntryProduct(context),
+          tooltip: 'Add Entry Product',
           child: const Icon(Icons.add, size: 28),
         ),
       ),
+    );
+  }
+
+  Widget _buildExitTab() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(AppConstants.defaultPadding),
+          child: ElevatedButton.icon(
+            onPressed: () => _navigateToAddExitProduct(context),
+            icon: const Icon(Icons.remove),
+            label: const Text('Add Exit Product'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            ),
+          ),
+        ),
+        Expanded(
+          child: _buildProductList(widget.stockService.getExits),
+        ),
+      ],
     );
   }
 
@@ -104,11 +126,23 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _navigateToAddProduct(BuildContext context) {
+  void _navigateToAddEntryProduct(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddProductScreen(
+        builder: (context) => AddEntryProductScreen(
+          stockService: widget.stockService,
+          onProductAdded: () => setState(() {}),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToAddExitProduct(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddExitProductScreen(
           stockService: widget.stockService,
           onProductAdded: () => setState(() {}),
         ),

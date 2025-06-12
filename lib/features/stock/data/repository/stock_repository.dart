@@ -91,6 +91,23 @@ class StockRepository {
     }
   }
 
+  Future<void> updateProduct(Product product) async {
+    if (kIsWeb) {
+      final index = _webProducts.indexWhere((p) => p.id == product.id);
+      if (index != -1) {
+        _webProducts[index] = product;
+      }
+      return;
+    }
+    final db = await database;
+    await db.update(
+      'products',
+      product.toMap(),
+      where: 'id = ?',
+      whereArgs: [product.id],
+    );
+  }
+
   Future<List<Product>> getProductsByType(String type) async {
     if (kIsWeb) {
       return _webProducts.where((p) => p.type == type).toList();
@@ -102,6 +119,26 @@ class StockRepository {
       whereArgs: [type],
     );
     return maps.map((map) => Product.fromMap(map)).toList();
+  }
+
+  Future<Product?> getProductByBarcode(String barcode, String type) async {
+    if (kIsWeb) {
+      try {
+        return _webProducts.firstWhere((p) => p.barcode == barcode && p.type == type);
+      } catch (e) {
+        return null;
+      }
+    }
+    final db = await database;
+    final maps = await db.query(
+      'products',
+      where: 'barcode = ? AND type = ?',
+      whereArgs: [barcode, type],
+    );
+    if (maps.isNotEmpty) {
+      return Product.fromMap(maps.first);
+    }
+    return null;
   }
 
   Future<List<Product>> getAllProducts() async {
@@ -129,6 +166,6 @@ class StockRepository {
   Future<void> close() async {
     if (kIsWeb) return;
     final db = await database;
-    db.close();
+    await db.close();
   }
 }
