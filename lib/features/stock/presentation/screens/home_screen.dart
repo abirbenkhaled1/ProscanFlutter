@@ -27,7 +27,7 @@ class HomeScreenState extends State<HomeScreen> {
             tabs: const [
               Tab(text: 'Entries'),
               Tab(text: 'Exits'),
-              Tab(text: 'All Stock'),
+              Tab(text: 'Archives'),
             ],
             labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             unselectedLabelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
@@ -64,7 +64,7 @@ class HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.remove),
             label: const Text('Add Exit Product'),
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             ),
           ),
         ),
